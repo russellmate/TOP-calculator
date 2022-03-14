@@ -1,0 +1,98 @@
+:root {
+	box-sizing: border-box;
+	font-family: 'Roboto', sans-serif;
+	--lightBeige: #dbcecb;
+	--yellow: #f5e5b9;
+	--orange: #e9a56d;
+	--pink: #e78194;
+	--grey: #8f8f8f;
+}
+
+body {
+	margin: 0;
+	max-width: 100vw;
+	max-height: 100vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background: linear-gradient(0.25turn, var(--yellow), var(--pink));
+}
+
+.calculator {
+	border: 5px solid var(--lightBeige);
+	border-radius: 1rem;
+	margin: 50%;
+}
+
+.screen {
+	text-align: end;
+	width: 17rem;
+	height: 8rem;
+	padding: 0.2rem 0.5rem;
+	margin: 1.5rem 1.5rem 0 1.5rem;
+	border-radius: 0.5rem;
+	background-color: var(--yellow);
+	border: 1px solid var(--grey);
+	font-size: 3rem;
+}
+
+.buttons {
+	height: 20rem;
+	margin: 1.5rem;
+	display: grid;
+	grid-template-rows: 1fr 4fr;
+	grid-template-columns: 3fr 1fr;
+	gap: 0.5rem;
+}
+
+.numbers {
+	grid-row-start: 2;
+	display: grid;
+	grid-template: repeat(4, 1fr) / repeat(3, 1fr);
+	gap: 0.5rem;
+}
+
+.functions {
+	grid-row-start: 2;
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 0.5rem;
+}
+
+.deletebtns {
+	grid-column-start: 1;
+	grid-column-end: 3;
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 0.5rem;
+}
+
+.btn {
+	cursor: pointer;
+	font-size: 2rem;
+	border-radius: 0.5rem;
+}
+
+.btn:hover {
+	opacity: 0.8;
+}
+
+.btn:active {
+	opacity: 0.4;
+}
+
+.numberbtn {
+	background-color: var(--lightBeige);
+	border: 1px solid var(--lightBeige);
+}
+
+.backspace,
+.clearbtn {
+	background-color: var(--pink);
+	border: 1px solid var(--pink);
+}
+
+.functionbtn {
+	background-color: var(--orange);
+	border: 1px solid var(--orange);
+}
