@@ -81,7 +81,8 @@ body {
 	opacity: 0.4;
 }
 
-.numberbtn {
+.numberbtn,
+#dot {
 	background-color: var(--lightBeige);
 	border: 1px solid var(--lightBeige);
 }

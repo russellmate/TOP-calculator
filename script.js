@@ -1,127 +1,134 @@
-class Calculator {
-	constructor(previousOpText, currentOpText) {
-		this.previousOpText = previousOpText;
-		this.currentOpText = currentOpText;
-		this.clear();
-	}
+const previousOp = document.querySelector('.previous-op');
+const currentOp = document.querySelector('.current-op');
+const numberBtns = document.querySelectorAll('.numberbtn');
+const operatorBtns = document.querySelectorAll('.operatorbtn');
 
-	clear() {
-		this.currentOp = '';
-		this.previousOp = '';
-		this.operation = undefined;
-	}
+let operatorClicked = false;
 
-	delete() {
-		this.currentOp = this.currentOp.toString().slice(0, -1);
-	}
-
-	appendNumber(number) {
-		if (number === '.' && this.currentOp.includes('.')) return;
-		this.currentOp = number = this.currentOp.toString() + number.toString();
-	}
-
-	chooseOp(operation) {
-		if (this.currentOp === '') return;
-		if (this.previousOp !== '') {
-			this.compute();
-		}
-		this.operation = operation;
-		this.previousOp = this.currentOp;
-		this.currentOp = '';
-	}
-
-	compute() {
-		let computation;
-		const prev = parseFloat(this.previousOp);
-		const current = parseFloat(this.currentOp);
-		if (isNaN(prev) || isNaN(current)) return;
-		switch (this.operation) {
-			case '+':
-				computation = prev + current;
-				break;
-			case '-':
-				computation = prev - current;
-				break;
-			case 'x':
-				computation = prev * current;
-				break;
-			case '/':
-				computation = prev / current;
-				break;
-			default:
-				return;
-		}
-		this.currentOp = computation;
-		this.operation = undefined;
-		this.previousOp = '';
-	}
-
-	getDisplayNumber(number) {
-		const stringNumber = number.toString();
-		const integerNumbers = parseFloat(stringNumber.split('.')[0]);
-		const decimalNumbers = stringNumber.split('.')[1];
-		let integerDisplay;
-		if (isNaN(integerNumbers)) {
-			integerDisplay = '';
+numberBtns.forEach(item => {
+	item.addEventListener('click', () => {
+		const text = document.createTextNode(item.textContent);
+		if (operatorClicked === false) {
+			previousOp.appendChild(text);
 		} else {
-			integerDisplay = integerNumbers.toLocaleString('en', {
-				maximumFractionDigits: 0,
-			});
+			currentOp.appendChild(text);
 		}
-		if (decimalNumbers != null) {
-			return `${integerDisplay}.${decimalNumbers}`;
-		} else {
-			return integerDisplay;
-		}
-	}
+	});
+});
 
-	updateDisplay() {
-		this.currentOpText.innerText = this.getDisplayNumber(this.currentOp);
-		if (this.operation != null) {
-			this.previousOpText.innerText = `${this.getDisplayNumber(
-				this.previousOp
-			)} ${this.operation}`;
-		} else {
-			this.previousOpText.innerText = '';
+const point = document.getElementById('dot').addEventListener('click', () => {
+	if (operatorClicked === false) {
+		if (previousOp.textContent.includes('.')) return;
+		else {
+			previousOp.textContent += '.';
+		}
+	} else {
+		if (currentOp.textContent.includes('.')) return;
+		else {
+			currentOp.textContent += '.';
 		}
 	}
+});
+
+operatorBtns.forEach(item => {
+	item.addEventListener('click', () => {
+		if (operatorClicked) {
+			return;
+		}
+		const text = document.createTextNode(item.textContent);
+		previousOp.appendChild(text);
+		operatorClicked = true;
+	});
+});
+
+function add(n1, n2) {
+	return n1 + n2;
 }
 
-const numberBtns = document.querySelectorAll('.numberbtn');
-const functionBtns = document.querySelectorAll('.operatorbtn');
-const equalsBtn = document.querySelector('#equals');
-const deleteBtn = document.querySelector('#backspace');
-const clearBtn = document.querySelector('#clear');
-const previousOpText = document.querySelector('.previous-op');
-const currentOpText = document.querySelector('.current-op');
+function subtract(n1, n2) {
+	return n1 - n2;
+}
 
-const calculator = new Calculator(previousOpText, currentOpText);
+function multiply(n1, n2) {
+	return n1 * n2;
+}
 
-clearBtn.addEventListener('click', () => {
-	calculator.clear();
-	calculator.updateDisplay();
-});
+function divide(n1, n2) {
+	return n1 / n2;
+}
 
-numberBtns.forEach(button => {
-	button.addEventListener('click', () => {
-		calculator.appendNumber(button.innerText);
-		calculator.updateDisplay();
+let equalsClicked = false;
+const equals = document
+	.getElementById('equals')
+	.addEventListener('click', () => {
+		const prevOpStr = previousOp.textContent;
+		const currOpStr = currentOp.textContent;
+
+		if (currOpStr === '') {
+			return;
+		}
+
+		if (prevOpStr.includes('+')) {
+			let sum = document.createTextNode(
+				add(parseFloat(prevOpStr), parseFloat(currOpStr))
+			);
+			previousOp.textContent = '';
+			currentOp.textContent = '';
+			previousOp.appendChild(sum);
+		} else if (prevOpStr.includes('-')) {
+			let sum = document.createTextNode(
+				subtract(parseFloat(prevOpStr), parseFloat(currOpStr))
+			);
+			previousOp.textContent = '';
+			currentOp.textContent = '';
+			previousOp.appendChild(sum);
+		} else if (prevOpStr.includes('x')) {
+			let sum = document.createTextNode(
+				multiply(parseFloat(prevOpStr), parseFloat(currOpStr))
+			);
+			previousOp.textContent = '';
+			currentOp.textContent = '';
+			previousOp.appendChild(sum);
+		} else if (prevOpStr.includes('/')) {
+			let sum = document.createTextNode(
+				divide(parseFloat(prevOpStr), parseFloat(currOpStr))
+			);
+			previousOp.textContent = '';
+			currentOp.textContent = '';
+			previousOp.appendChild(sum);
+		}
+
+		equalsClicked = true;
+		operatorClicked = false;
 	});
+
+const clear = document.getElementById('clear').addEventListener('click', () => {
+	previousOp.textContent = '';
+	currentOp.textContent = '';
+	operatorClicked = false;
+	equalsClicked = false;
 });
 
-functionBtns.forEach(button => {
-	button.addEventListener('click', () => {
-		calculator.chooseOp(button.innerText);
-		calculator.updateDisplay();
+const backspace = document
+	.querySelector('#backspace')
+	.addEventListener('click', () => {
+		let prevOpStr = previousOp.textContent;
+		let currOpStr = currentOp.textContent;
+
+		if (
+			prevOpStr.includes('+') ||
+			prevOpStr.includes('-') ||
+			prevOpStr.includes('*') ||
+			prevOpStr.includes('/')
+		) {
+			currOpStr = currOpStr.slice(0, -1);
+			currOpStr = document.createTextNode(currOpStr);
+			currentOp.textContent = '';
+			currentOp.appendChild(currOpStr);
+		} else {
+			prevOpStr = prevOpStr.slice(0, -1);
+			prevOpStr = document.createTextNode(prevOpStr);
+			previousOp.textContent = '';
+			previousOp.appendChild(prevOpStr);
+		}
 	});
-});
-
-equalsBtn.addEventListener('click', button => {
-	calculator.compute();
-	calculator.updateDisplay();
-});
-
-deleteBtn.addEventListener('click', button => {
-	calculator.delete();
-	calculator.updateDisplay();
-});
